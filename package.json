@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "discord-rpc": "^3.2.0",
+    "ws": "^7.4.4"
+  },
+  "name": "osu-rpc",
+  "version": "1.0.0-alpha",
+  "description": "Detailed osu! pp rich presence",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KallelGaNewk/osu-rpc.git"
+  },
+  "author": "KallelGaNewk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KallelGaNewk/osu-rpc/issues"
+  },
+  "homepage": "https://github.com/KallelGaNewk/osu-rpc#readme"
+}
