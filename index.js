@@ -11,27 +11,51 @@ rpc.on('ready', () => {
   let data
 
   ws.on('message', (rd) => {
-    let osuData = JSON.parse(rd)
-    data = {
-      beatmap: `${osuData.menu.bm.metadata.artist} - ${osuData.menu.bm.metadata.title} [${osuData.menu.bm.metadata.difficulty}] mapped by ${osuData.menu.bm.metadata.mapper}`,
-      gameplay: {
-        score: osuData.gameplay.score,
-        accuracy: `${osuData.gameplay.accuracy}%`,
-        combo: `${osuData.gameplay.combo.current}x (${osuData.gameplay.combo.maxThisPlay}x max)`,
-        hits: `(Grade: ${!!osuData.gameplay.hits.grade.current ? osuData.gameplay.hits.grade.current : '?'}) ${osuData.gameplay.hits['300']}x300 ${osuData.gameplay.hits['100']}x100 ${osuData.gameplay.hits['50']}x50 ${osuData.gameplay.hits['0']}xMiss`,
-        pp: `${osuData.gameplay.pp.current}pp`
-      }
-    }
+    data = JSON.parse(rd)
   })
 
   let setActivity = () => {
     if (!data) { return }
+
+    let formattedData = {
+      beatmap: {
+        url: `https://osu.ppy.sh/beatmapsets/${data.menu.bm.id}`,
+        title: `${data.menu.bm.metadata.artist} - ${data.menu.bm.metadata.title}`,
+        mapper: data.menu.bm.metadata.mapper,
+        difficulty: data.menu.bm.metadata.difficulty,
+        bpm: `${data.menu.bm.stats.BPM.min !== data.menu.bm.stats.BPM.max ? `${data.menu.bm.stats.BPM.min}-${data.menu.bm.stats.BPM.max}` : data.menu.bm.stats.BPM.min.toString()}`
+      },
+      score: data.gameplay.score,
+      accuracy: data.gameplay.accuracy,
+      combo: data.gameplay.combo,
+      hits: {
+        '0': data.gameplay.hits['0'],
+        '50': data.gameplay.hits['50'],
+        '100': data.gameplay.hits['100'],
+        '300': data.gameplay.hits['300'],
+        grade: data.gameplay.hits.grade.current
+      },
+      pp: data.gameplay.pp
+    }
+
+    if (!formattedData.hits.grade) {
+      rpc.setActivity({
+        details: formattedData.beatmap.title,
+        state: `In menu | Music: ${formattedData.beatmap.url}`,
+        largeImageKey: config.assetId,
+        largeImageText: `BPM: ${formattedData.beatmap.bpm} | Mapper: ${formattedData.beatmap.mapper}`,
+        instance: false
+      })
+      return
+    }
+
+    let hits = `${formattedData.hits['300']}x300 : ${formattedData.hits['100']}x100 : ${formattedData.hits['50']}x50 : ${formattedData.hits['0']}xMiss`
+
     rpc.setActivity({
-      details: `${data.beatmap}`,
-      state: `${data.gameplay.pp} | ${data.gameplay.hits}`,
+      details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}] mapped by ${formattedData.beatmap.mapper}`,
+      state: `${formattedData.pp.current}pp | ${formattedData.hits.grade} : ${formattedData.accuracy}% : Score: ${formattedData.score} | ${hits}`,
       largeImageKey: config.assetId,
-      largeImageText: `Score: ${data.gameplay.score} | ${data.gameplay.accuracy}`,
-      instance: false
+      largeImageText: `Combo: ${formattedData.combo.current}x (${formattedData.combo.max}x max) | BPM: ${formattedData.beatmap.bpm} | ${formattedData.beatmap.url}`,
     })
   }
 
@@ -43,7 +67,4 @@ rpc.on('ready', () => {
   })
 })
 
-rpc.login({
-  clientId: config.applicationId
-})
-  .catch(console.error)
+rpc.login({ clientId: config.applicationId }).catch(console.error)
