@@ -4,7 +4,7 @@
     "ws": "^7.4.4"
   },
   "name": "osu-rpc",
-  "version": "1.0.0-alpha",
+  "version": "1.0.1-alpha",
   "description": "Detailed osu! pp rich presence",
   "main": "index.js",
   "scripts": {

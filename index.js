@@ -7,7 +7,8 @@ const rpc = new DiscordRPC.Client({ transport: 'ipc' })
 const cooldown = 15 * 1000 // activity can only be set every 15 seconds
 
 rpc.on('ready', () => {
-  console.log('osu!pp ready')
+  console.log('osu!pp ready!')
+  console.log(`Welcome ${rpc.user.username}#${rpc.user.discriminator}! (ID: ${rpc.user.id})`)
   let data
 
   ws.on('message', (rd) => {
