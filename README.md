@@ -16,6 +16,7 @@ If necessary, restart your computer
 
 ```
 $ cd path/to/osu-rpc
+$ npm install
 $ node index.js
 ```
 Something should appear on your screen, like this:<br>
