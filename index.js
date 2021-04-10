@@ -7,7 +7,7 @@ const rpc = new DiscordRPC.Client({ transport: 'ipc' })
 const cooldown = 15 * 1000 // activity can only be set every 15 seconds
 
 rpc.on('ready', () => {
-  console.log('osu!pp ready!')
+  console.log('osu!rpc ready!')
   console.log(`Welcome ${rpc.user.username}#${rpc.user.discriminator}! (ID: ${rpc.user.id})`)
   let data
 
@@ -18,9 +18,17 @@ rpc.on('ready', () => {
   let setActivity = () => {
     if (!data) { return }
 
+    if (data.menu.bm.set <= 1) {
+      return rpc.setActivity({
+        details: `${data.menu.bm.metadata.artist} - ${data.menu.bm.metadata.title}`,
+        state: `In menu`,
+        largeImageKey: config.assetId
+      })
+    }
+
     let formattedData = {
       beatmap: {
-        url: `https://osu.ppy.sh/beatmapsets/${data.menu.bm.id}`,
+        url: `https://osu.ppy.sh/beatmapsets/${data.menu.bm.set}`,
         title: `${data.menu.bm.metadata.artist} - ${data.menu.bm.metadata.title}`,
         mapper: data.menu.bm.metadata.mapper,
         difficulty: data.menu.bm.metadata.difficulty,
@@ -42,10 +50,13 @@ rpc.on('ready', () => {
     if (!formattedData.hits.grade) {
       rpc.setActivity({
         details: formattedData.beatmap.title,
-        state: `In menu | Music: ${formattedData.beatmap.url}`,
+        state: `In menu`,
         largeImageKey: config.assetId,
         largeImageText: `BPM: ${formattedData.beatmap.bpm} | Mapper: ${formattedData.beatmap.mapper}`,
-        instance: false
+        instance: false,
+        buttons: [
+          { label: 'Beatmap', url: formattedData.beatmap.url }
+        ]
       })
       return
     }
@@ -56,7 +67,11 @@ rpc.on('ready', () => {
       details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}] mapped by ${formattedData.beatmap.mapper}`,
       state: `${formattedData.pp.current}pp | ${formattedData.hits.grade} : ${formattedData.accuracy}% : Score: ${formattedData.score} | ${hits}`,
       largeImageKey: config.assetId,
-      largeImageText: `Combo: ${formattedData.combo.current}x (${formattedData.combo.max}x max) | BPM: ${formattedData.beatmap.bpm} | ${formattedData.beatmap.url}`,
+      largeImageText: `Combo: ${formattedData.combo.current}x (${formattedData.combo.max}x max) | BPM: ${formattedData.beatmap.bpm}`,
+      buttons: [
+        { label: 'Beatmap', url: formattedData.beatmap.url },
+        { label: 'Profile', url: `https://osu.ppy.sh/users/${encodeURI(data.gameplay.name)}` }
+      ]
     })
   }
 
