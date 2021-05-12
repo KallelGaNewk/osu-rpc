@@ -10,8 +10,7 @@
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"Installing needed Shit...\" && npm install -g pkg && pkg .",
+    "build": "echo \"installing needed stuff...\" && npm install && npm install -g pkg && echo \"done installing... now building files...\" && pkg ."
   },
   "repository": {
     "type": "git",
