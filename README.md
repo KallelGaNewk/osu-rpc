@@ -16,7 +16,7 @@ If necessary, restart your computer
 
 ```
 $ cd path/to/osu-rpc
-$ npm run install
+$ npm run build
 ```
 Something should appear on your screen, like this:<br>
 ![image](https://user-images.githubusercontent.com/61438367/113467637-adbf7b80-941a-11eb-984f-086b3f9cb4c4.png)
