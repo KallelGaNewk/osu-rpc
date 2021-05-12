@@ -1,14 +1,17 @@
 {
   "dependencies": {
     "discord-rpc": "^3.2.0",
+    "pkg": "^5.1.0",
     "ws": "^7.4.5"
   },
   "name": "osu-rpc",
   "version": "1.0.1-alpha",
   "description": "Detailed osu! pp rich presence",
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"Installing needed Shit...\" && npm install -g pkg && pkg .",
   },
   "repository": {
     "type": "git",
