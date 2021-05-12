@@ -7,7 +7,7 @@
 
 2. Once with the gosumemory running, open osu!
 
-3. Download and install [NodeJS](https://nodejs.org/en/) abd [Git](https://git-scm.com/downloads)<br>
+3. Download and install [NodeJS](https://nodejs.org/en/) and [Git](https://git-scm.com/downloads)<br>
 If necessary, restart your computer
 
 4. Open the console and type:
