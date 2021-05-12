@@ -54,6 +54,7 @@ rpc.on("ready", () => {
       pp: data.gameplay.pp,
     };
 
+    // In menu
     if (!formattedData.hits.grade) {
       return rpc.setActivity({
         details: formattedData.beatmap.title,
@@ -65,11 +66,14 @@ rpc.on("ready", () => {
       });
     }
 
-    let hits = `${formattedData.hits["300"]}x300 : ${formattedData.hits["100"]}x100 : ${formattedData.hits["50"]}x50 : ${formattedData.hits["0"]}xMiss`;
+    // In game
+    // let hits = `${formattedData.hits["300"]}x300 : ${formattedData.hits["100"]}x100 : ${formattedData.hits["50"]}x50 : ${formattedData.hits["0"]}xMiss`;
 
     rpc.setActivity({
-      details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}] mapped by ${formattedData.beatmap.mapper}`,
-      state: `${formattedData.pp.current}pp | ${formattedData.hits.grade} : ${formattedData.accuracy}% : Score: ${formattedData.score} | ${hits}`,
+      // details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}] mapped by ${formattedData.beatmap.mapper}`,
+      // state: `${formattedData.pp.current}pp | ${formattedData.hits.grade} : ${formattedData.accuracy}% : Score: ${formattedData.score} | ${hits}`,
+      details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}]`,
+      state: `${formattedData.pp.current}pp | ${formattedData.hits.grade} : ${formattedData.accuracy}% | Score: ${formattedData.score}`,
       largeImageKey: config.assetId,
       largeImageText: `Combo: ${formattedData.combo.current}x (${formattedData.combo.max}x max) | BPM: ${formattedData.beatmap.bpm}`,
       buttons: [
