@@ -104,5 +104,4 @@ dist
 .tern-port
 
 # remove if u want to add binaries
-*.exe
-osu-rpc-*
+*.out/
