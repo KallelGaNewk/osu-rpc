@@ -29,4 +29,4 @@ In menu:<br>
 ![image](https://imgur.com/WP1WJNY.png)
 
 In game:<br>
-![image](https://imgur.com/gYyXDrI.png)
+![image](https://imgur.com/RCY3Ril.png)
