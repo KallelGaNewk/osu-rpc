@@ -7,16 +7,16 @@
 
 2. Once with the gosumemory running, open osu!
 
-4. Download and install [NodeJS](https://nodejs.org/en/)<br>
+3. Download and install [NodeJS](https://nodejs.org/en/) abd [Git](https://git-scm.com/downloads)<br>
 If necessary, restart your computer
-
-3. Download [the source code of osu!rpc](https://github.com/KallelGaNewk/osu-rpc/releases/latest) and extract it
 
 4. Open the console and type:
 
 ```
-$ cd path/to/osu-rpc
+$ git clone https://github.com/KallelGaNewk/osu-rpc
 $ npm run build
+$ cd out
+$ Have Fun!
 ```
 Something should appear on your screen, like this:<br>
 ![image](https://user-images.githubusercontent.com/61438367/113467637-adbf7b80-941a-11eb-984f-086b3f9cb4c4.png)
