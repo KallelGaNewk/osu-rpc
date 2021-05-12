@@ -1,21 +1,30 @@
 {
-  "dependencies": {
-    "discord-rpc": "^3.2.0",
-    "pkg": "^5.1.0",
-    "ws": "^7.4.5"
-  },
   "name": "osu-rpc",
-  "version": "1.0.1-alpha",
-  "description": "Detailed osu! pp rich presence",
+  "version": "1.1.0",
+  "description": "Discord Rich Presence for osu!",
   "main": "index.js",
   "bin": "index.js",
+  "dependencies": {
+    "discord-rpc": "^3.2.0",
+    "ws": "^7.4.5"
+  },
+  "devDependencies": {
+    "pkg": "^5.1.0"
+  },
   "scripts": {
-    "build": "echo \"installing needed stuff...\" && npm install && npm install -g pkg && echo \"done installing... now building files...\" && pkg . --out-path out -o osu!presence && echo \"done building... files are located in ./out \""
+    "build": "pkg . --out-path ./dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KallelGaNewk/osu-rpc.git"
+    "url": "https://github.com/KallelGaNewk/osu-rpc.git"
   },
+  "keywords": [
+    "discord",
+    "osu",
+    "rich-presence",
+    "discord-rpc-client",
+    "gosumemory"
+  ],
   "author": "KallelGaNewk",
   "license": "MIT",
   "bugs": {

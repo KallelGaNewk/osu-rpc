@@ -1,29 +1,32 @@
-const DiscordRPC = require('discord-rpc')
-const WebSocket = require('ws')
-const config = require('./config')
+const DiscordRPC = require("discord-rpc");
+const WebSocket = require("ws");
+const config = require("./config");
 
-const ws = new WebSocket(config.wsURL)
-const rpc = new DiscordRPC.Client({ transport: 'ipc' })
-const cooldown = 15 * 1000 // activity can only be set every 15 seconds
+const ws = new WebSocket(config.wsURL);
+const rpc = new DiscordRPC.Client({ transport: "ipc" });
+const cooldown = 15 * 1000; // activity can only be set every 15 seconds
 
-rpc.on('ready', () => {
-  console.log('osu!rpc ready!')
-  console.log(`Welcome ${rpc.user.username}#${rpc.user.discriminator}! (ID: ${rpc.user.id})`)
-  let data
+rpc.on("ready", () => {
+  console.log("osu!rpc ready!");
+  console.log(
+    `Welcome ${rpc.user.username}#${rpc.user.discriminator}! (ID: ${rpc.user.id})`
+  );
 
-  ws.on('message', (rd) => {
-    data = JSON.parse(rd)
-  })
+  let data;
+
+  ws.on("message", (rd) => {
+    data = JSON.parse(rd);
+  });
 
   let setActivity = () => {
-    if (!data) { return }
+    if (!data) return;
 
     if (data.menu.bm.set <= 1) {
       return rpc.setActivity({
         details: `${data.menu.bm.metadata.artist} - ${data.menu.bm.metadata.title}`,
         state: `In menu`,
-        largeImageKey: config.assetId
-      })
+        largeImageKey: config.assetId,
+      });
     }
 
     let formattedData = {
@@ -32,36 +35,37 @@ rpc.on('ready', () => {
         title: `${data.menu.bm.metadata.artist} - ${data.menu.bm.metadata.title}`,
         mapper: data.menu.bm.metadata.mapper,
         difficulty: data.menu.bm.metadata.difficulty,
-        bpm: `${data.menu.bm.stats.BPM.min !== data.menu.bm.stats.BPM.max ? `${data.menu.bm.stats.BPM.min}-${data.menu.bm.stats.BPM.max}` : data.menu.bm.stats.BPM.min.toString()}`
+        bpm: `${
+          data.menu.bm.stats.BPM.min !== data.menu.bm.stats.BPM.max
+            ? `${data.menu.bm.stats.BPM.min}-${data.menu.bm.stats.BPM.max}`
+            : data.menu.bm.stats.BPM.min.toString()
+        }`,
       },
       score: data.gameplay.score,
       accuracy: data.gameplay.accuracy,
       combo: data.gameplay.combo,
       hits: {
-        '0': data.gameplay.hits['0'],
-        '50': data.gameplay.hits['50'],
-        '100': data.gameplay.hits['100'],
-        '300': data.gameplay.hits['300'],
-        grade: data.gameplay.hits.grade.current
+        0: data.gameplay.hits["0"],
+        50: data.gameplay.hits["50"],
+        100: data.gameplay.hits["100"],
+        300: data.gameplay.hits["300"],
+        grade: data.gameplay.hits.grade.current,
       },
-      pp: data.gameplay.pp
-    }
+      pp: data.gameplay.pp,
+    };
 
     if (!formattedData.hits.grade) {
-      rpc.setActivity({
+      return rpc.setActivity({
         details: formattedData.beatmap.title,
         state: `In menu`,
         largeImageKey: config.assetId,
         largeImageText: `BPM: ${formattedData.beatmap.bpm} | Mapper: ${formattedData.beatmap.mapper}`,
         instance: false,
-        buttons: [
-          { label: 'Beatmap', url: formattedData.beatmap.url }
-        ]
-      })
-      return
+        buttons: [{ label: "Beatmap", url: formattedData.beatmap.url }],
+      });
     }
 
-    let hits = `${formattedData.hits['300']}x300 : ${formattedData.hits['100']}x100 : ${formattedData.hits['50']}x50 : ${formattedData.hits['0']}xMiss`
+    let hits = `${formattedData.hits["300"]}x300 : ${formattedData.hits["100"]}x100 : ${formattedData.hits["50"]}x50 : ${formattedData.hits["0"]}xMiss`;
 
     rpc.setActivity({
       details: `${formattedData.beatmap.title} [${formattedData.beatmap.difficulty}] mapped by ${formattedData.beatmap.mapper}`,
@@ -69,18 +73,21 @@ rpc.on('ready', () => {
       largeImageKey: config.assetId,
       largeImageText: `Combo: ${formattedData.combo.current}x (${formattedData.combo.max}x max) | BPM: ${formattedData.beatmap.bpm}`,
       buttons: [
-        { label: 'Beatmap', url: formattedData.beatmap.url },
-        { label: 'Profile', url: `https://osu.ppy.sh/users/${encodeURI(data.gameplay.name)}` }
-      ]
-    })
-  }
+        { label: "Beatmap", url: formattedData.beatmap.url },
+        {
+          label: "Profile",
+          url: `https://osu.ppy.sh/users/${encodeURI(data.gameplay.name)}`,
+        },
+      ],
+    });
+  };
 
-  setActivity()
-  const interval = setInterval(setActivity, cooldown)
-  ws.on('close', () => {
-    clearInterval(interval)
-    process.exit(1)
-  })
-})
+  setActivity();
+  const interval = setInterval(setActivity, cooldown);
+  ws.on("close", () => {
+    clearInterval(interval);
+    process.exit(1);
+  });
+});
 
-rpc.login({ clientId: config.applicationId }).catch(console.error)
+rpc.login({ clientId: config.applicationId }).catch(console.error);
