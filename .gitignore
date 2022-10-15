@@ -1,7 +1,2 @@
-node_modules
-dist
-*.log
-
-# IntelliJ and VSCode folder config
-.idea
-.vscode
+# Rust compiler output
+/target
